@@ -2,7 +2,7 @@ name: Daily History Fact Generator
 
 on:
   schedule:
-    # Roz subah 9:00 AM IST (UTC 3:30 AM) par chalega
+    # Roz subah 01:00 AM IST (UTC 3:30 AM) par chalega
     - cron: "30 3 * * *"
   workflow_dispatch: {}  # isse aap manually bhi "Run workflow" button se test kar sakte ho
 
