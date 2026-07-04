@@ -18,7 +18,7 @@ from googleapiclient.http import MediaIoBaseUpload
 
 # ---------- CONFIG (GitHub Secrets se aayega, yaha khali chhodo) ----------
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
-DRIVE_PARENT_FOLDER_ID = os.environ["1Be6V0HGGPYyJlEYMIaHAOeEW6wDEmwhi"]  # jis folder ke andar date-folders banenge
+DRIVE_PARENT_FOLDER_ID = os.environ["DRIVE_PARENT_FOLDER_ID"]  # jis folder ke andar date-folders banenge
 SERVICE_ACCOUNT_JSON_PATH = "service_account.json"  # GitHub Actions isse temp banayega
 
 MAX_RETRIES = 3
