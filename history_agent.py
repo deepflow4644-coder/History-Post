@@ -11,7 +11,7 @@ import io
 import time
 import datetime
 import requests
-import google.generativeai as genai
+from google import genai
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
@@ -47,11 +47,14 @@ CAPTION: [Instagram caption with 5-6 relevant hashtags]
 """
 
 
-def generate_content_with_retry(model, already_used_hooks):
+def generate_content_with_retry(client, already_used_hooks):
     prompt = build_style_prompt(already_used_hooks)
 
     for attempt in range(1, MAX_RETRIES + 1):
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
         text = response.text.strip()
 
         # Quality check loop - dekho HOOK/FACT/CAPTION teeno present hain ya nahi
@@ -137,8 +140,7 @@ def main():
     today = datetime.date.today().isoformat()  # jaise 2026-07-04
     print(f"Aaj ke {POSTS_PER_DAY} history-fact posts bana raha hoon: {today}")
 
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel("gemini-2.5-flash")
+    client = genai.Client(api_key=GEMINI_API_KEY)
 
     drive_service = get_drive_service()
     folder_id = create_dated_folder(drive_service, today)
@@ -149,7 +151,7 @@ def main():
         post_num = str(i).zfill(2)  # 01, 02, ... 20
         print(f"\n--- Post {post_num}/{POSTS_PER_DAY} ---")
 
-        raw = generate_content_with_retry(model, already_used_hooks)
+        raw = generate_content_with_retry(client, already_used_hooks)
         parts = parse_content(raw)
         already_used_hooks.append(parts["hook"])
         print("Content generate ho gaya:", parts["hook"])
@@ -171,4 +173,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+    
