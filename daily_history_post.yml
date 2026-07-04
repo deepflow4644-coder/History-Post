@@ -1,0 +1,31 @@
+name: Daily History Fact Generator
+
+on:
+  schedule:
+    # Roz subah 9:00 AM IST (UTC 3:30 AM) par chalega
+    - cron: "30 3 * * *"
+  workflow_dispatch: {}  # isse aap manually bhi "Run workflow" button se test kar sakte ho
+
+jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo checkout karo
+        uses: actions/checkout@v4
+
+      - name: Python setup karo
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Dependencies install karo
+        run: pip install -r requirements.txt
+
+      - name: Service account key file banao
+        run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Script chalao
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DRIVE_PARENT_FOLDER_ID: ${{ secrets.DRIVE_PARENT_FOLDER_ID }}
+        run: python history_agent.py
