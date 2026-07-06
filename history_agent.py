@@ -12,14 +12,16 @@ import time
 import datetime
 import requests
 from groq import Groq
-from google.oauth2 import service_account
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 
 # ---------- CONFIG (GitHub Secrets se aayega, yaha khali chhodo) ----------
 GROQ_API_KEY = os.environ["GROQ_API_KEY"]
 DRIVE_PARENT_FOLDER_ID = os.environ["DRIVE_PARENT_FOLDER_ID"]  # jis folder ke andar date-folders banenge
-SERVICE_ACCOUNT_JSON_PATH = "service_account.json"  # GitHub Actions isse temp banayega
+OAUTH_CLIENT_ID = os.environ["261012966066-besqecupica72fhuvnne9v7ifr846fqk.apps.googleusercontent.com"]
+OAUTH_CLIENT_SECRET = os.environ["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"]
+OAUTH_REFRESH_TOKEN = os.environ["OAUTH_REFRESH_TOKEN"]
 
 MAX_RETRIES = 3
 POSTS_PER_DAY = 20
