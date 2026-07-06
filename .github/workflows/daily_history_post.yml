@@ -2,7 +2,7 @@ name: Daily History Fact Generator
 
 on:
   schedule:
-    # Roz subah 01:00 AM IST (UTC 3:30 AM) par chalega
+    # Roz subah 9:00 AM IST (UTC 3:30 AM) par chalega
     - cron: "30 3 * * *"
   workflow_dispatch: {}  # isse aap manually bhi "Run workflow" button se test kar sakte ho
 
@@ -26,6 +26,6 @@ jobs:
 
       - name: Script chalao
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DRIVE_PARENT_FOLDER_ID: ${{ secrets.DRIVE_PARENT_FOLDER_ID }}
         run: python history_agent.py
