@@ -19,8 +19,8 @@ from googleapiclient.http import MediaIoBaseUpload
 # ---------- CONFIG (GitHub Secrets se aayega, yaha khali chhodo) ----------
 GROQ_API_KEY = os.environ["GROQ_API_KEY"]
 DRIVE_PARENT_FOLDER_ID = os.environ["DRIVE_PARENT_FOLDER_ID"]  # jis folder ke andar date-folders banenge
-OAUTH_CLIENT_ID = os.environ["261012966066-besqecupica72fhuvnne9v7ifr846fqk.apps.googleusercontent.com"]
-OAUTH_CLIENT_SECRET = os.environ["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"]
+OAUTH_CLIENT_ID = os.environ["OAUTH_CLIENT_ID"]
+OAUTH_CLIENT_SECRET = os.environ["OAUTH_CLIENT_SECRET"]
 OAUTH_REFRESH_TOKEN = os.environ["OAUTH_REFRESH_TOKEN"]
 
 MAX_RETRIES = 3
