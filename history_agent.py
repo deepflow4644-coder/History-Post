@@ -11,13 +11,13 @@ import io
 import time
 import datetime
 import requests
-from google import genai
+from groq import Groq
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 
 # ---------- CONFIG (GitHub Secrets se aayega, yaha khali chhodo) ----------
-GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
+GROQ_API_KEY = os.environ["GROQ_API_KEY"]
 DRIVE_PARENT_FOLDER_ID = os.environ["DRIVE_PARENT_FOLDER_ID"]  # jis folder ke andar date-folders banenge
 SERVICE_ACCOUNT_JSON_PATH = "service_account.json"  # GitHub Actions isse temp banayega
 
@@ -51,11 +51,11 @@ def generate_content_with_retry(client, already_used_hooks):
     prompt = build_style_prompt(already_used_hooks)
 
     for attempt in range(1, MAX_RETRIES + 1):
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
         )
-        text = response.text.strip()
+        text = response.choices[0].message.content.strip()
 
         # Quality check loop - dekho HOOK/FACT/CAPTION teeno present hain ya nahi
         if "HOOK:" in text and "FACT:" in text and "CAPTION:" in text:
@@ -140,7 +140,7 @@ def main():
     today = datetime.date.today().isoformat()  # jaise 2026-07-04
     print(f"Aaj ke {POSTS_PER_DAY} history-fact posts bana raha hoon: {today}")
 
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    client = Groq(api_key=GROQ_API_KEY)
 
     drive_service = get_drive_service()
     folder_id = create_dated_folder(drive_service, today)
@@ -173,4 +173,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
